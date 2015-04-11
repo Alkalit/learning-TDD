@@ -16,9 +16,6 @@ class HomePageTest(TestCase):
         request = HttpRequest()
         response = home_page(request)
 
-        # Проверка содержимого страницы
         # Смотрим что нам пришла html-страница с нужным содержимым.
-        self.assertTrue(response.content.startswith(b'<html>'))
-        self.assertIn(b'<title>To-Do list</title>', response.content)
-        # стрип нужен из символа \n в конце файла
-        self.assertTrue(response.content.strip().endswith(b'</html>'))
+        expected_html = render_to_string('lists/home.html')
+        self.assertEqual(response.content.decode(), expected_html)
