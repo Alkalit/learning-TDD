@@ -36,10 +36,7 @@ class NewVisitorTest(unittest.TestCase):
 
         table = self.browser.find_element_by_id('list_table')
         rows = table.find_elements_by_tag_name('tr')
-        self.assertTrue(
-            any(row.text == '1: Купить сладкого хлеба' for row in rows),
-            'New to-do item did not appear in table'
-        )
+        self.assertIn('1: Купить сладкого хлеба', [row.text for row in rows])
 
         # Окошко для ввдоа также было доступно
         # Пахом ввел:
