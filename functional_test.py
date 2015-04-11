@@ -1,5 +1,6 @@
 import unittest
 from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
 
 class NewVisitorTest(unittest.TestCase):
 
@@ -16,12 +17,28 @@ class NewVisitorTest(unittest.TestCase):
 
         # И обратил внимание на заголовок в браузере
         self.assertIn('To-Do', self.browser.title)
+        header_text = self.browser.find_element_by_tag_name('h1').text
+        self.assertIn('To-Do', header_text)
 
         # Он увидел что можно внести заметку
+        input_ = self.browser.find_elements_by_id('new_item')
+        self.assertEqual(
+            input_.get_attribute('placeholder'),
+            'Введите заметку'
+        )
 
         # Он ввел "Купить сладкого хлеба" в текстовое поле
-        # Когда он нажал ввод, страница обновилась, и на странице начался список:
+        input_.send_keys('Купить сладкого хлеба')
+        # Когда он нажал ввод, страница обновилась,
+        input_.send_keys(Keys.ENTER)
+        # и на странице начался список:
         # "1: Купить сладкого хлеба" как элемент списка.
+
+        table = self.browser.find_element_by_id('list_table')
+        rows = table.find_elements_by_tag_name('tr')
+        self.assertTrue(
+            any(row.text == '1: Купить сладкого хлеба' for row in rows)
+        )
 
         # Окошко для ввдоа также было доступно
         # Пахом ввел:
