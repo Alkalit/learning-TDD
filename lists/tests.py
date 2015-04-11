@@ -12,10 +12,20 @@ class HomePageTest(TestCase):
         found = resolve('/')
         self.assertEqual(found.func, home_page)
 
-    def test_home_page_returns_correct_html(self):
+    def test_returns_correct_html(self):
         request = HttpRequest()
         response = home_page(request)
 
         # Смотрим что нам пришла html-страница с нужным содержимым.
         expected_html = render_to_string('lists/home.html')
         self.assertEqual(response.content.decode(), expected_html)
+
+    def test_can_save_a_POST_request(self):
+        # Конструируем пост-запрос.
+        request = HttpRequest()
+        request.method = 'POST'
+        request.POST['item_text'] = 'A new list item'
+
+        response = home_page(request)
+
+        self.assertIn('A new list item', response.content.decode())
