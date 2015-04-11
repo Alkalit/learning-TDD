@@ -1,0 +1,8 @@
+-- Функциональные тесты так называются потому что они позволяют оценить приложение с точки зрения функционирования пользователя.
+    -- Терминология: Functional Test == Acceptance Test == End-to-End Test
+        -- Это все одно и  то же.
+
+-- КОНЦЕПЦИИ:
+-- User Story
+    A description of how the application will work from the point of view of the user.
+    Used to structure a functional test.
