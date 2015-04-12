@@ -43,6 +43,17 @@ class HomePageTest(TestCase):
         new_item = Item.objects.first()
         self.assertEqual(new_item.text, note)
 
+    def test_redirects_after_POST(self):
+        note = 'A new list item'
+        # Конструируем пост-запрос.
+        request = HttpRequest()
+        request.method = 'POST'
+        # item_text - ключ который присылает форма.
+        request.POST['item_text'] = note
+
+        # Отправляем запрос вьюхе
+        response = home_page(request)
+
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response['location'], '/')
 
