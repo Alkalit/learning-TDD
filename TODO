@@ -27,12 +27,57 @@
 
 -- LiveServerTestCase expects to be run by the Django test runner using manage.py. As
 of Django 1.6, the test runner will find any files whose name begins with test. To keep
-things neat and tidy, let’s make a folder for our functional tests, so that it looks a bit like
+things neat and tidy, let's make a folder for our functional tests, so that it looks a bit like
 an app. All Django needs is for it to be a valid Python module (ie, one with a  __in‐
 it__.pyin it):
 
 -- Для запуска функциональных тестов на отдельном сервере их надо их отнаследовать от LiveServerTestCase и 
     запускать через manage test
+
+-- TDD is closely associated with the agile movement in software development, which
+    includes a reaction against  Big Design Up Frontthe traditional software engineering
+    practice whereby, after a lengthy requirements gathering exercise, there is an equally
+    lengthy design stage where the software is planned out on paper. The agile philosophy
+    is that you learn more from solving problems in practice than in theory, especially when
+    you confront your application with real users as soon as possible.
+    Instead of a long upfront design phase, we try and put a minimum viable application  out there early, and let
+    the design evolve gradually based on feedback from real-world usage.
+
+-- YAGNI!
+    Once you start thinking about design, it can be hard to stop. All sorts of other thoughts
+    are occurring to us—we might want to give each list a name or title, we might want to
+    recognise users using usernames and passwords, we might want to add a longer notes
+    field as well as short descriptions to our list, we might want to store some kind of or‐
+    dering, and so on. But we obey another tenet of the agile gospel: “YAGNI” (pronounced
+    yag-knee), which stands for “You aint gonna need it!” As software developers, we have
+    fun creating things, and sometimes it's hard to resist the urge to build things just because
+    an idea occurred to us and we mightneed it. The trouble is that more often than not,
+    no matter how cool the idea was, you won'tend up using it. Instead you have a load of
+    unused code, adding to the complexity of your application. YAGNI is the mantra we
+    use to resist our overenthusiastic creative urges.
+
+-- REST
+    We have an idea of the data structure we want—the Model part of Model-View-Controller (MVC).
+    What about the View and Controller parts? How should the user interact with Lists and their Items using a web browser?
+
+    Representational State Transfer (REST) is an approach to web design that's usually used to guide the design of web-based APIs.
+    When designing a user-facing site, it's not possible to stick strictly to the REST rules, but they still provide some useful inspiration.
+
+    REST suggests that we have a URL structure that matches our data structure, in this case lists and list items. Each list can have its own URL:
+
+        /lists/<list identifier>/
+
+    That will fulfill the requirement we've specified in our FT. To view a list, we use a GET request (a normal browser visit to the page).
+
+    To create a brand new list, we'll have a special URL that accepts POST requests:
+
+        /lists/new
+
+    To add a new item to an existing list, we'll have a separate URL, to which we can send POST requests:
+
+        /lists/<list identifier>/add_item
+
+    (Again, we're not trying to perfectly follow the rules of REST, which would use a PUT request here—we're just using REST for inspiration.)
 
 -- КОНЦЕПЦИИ:
     -- User Story

@@ -30,8 +30,11 @@ class NewVisitorTest(LiveServerTestCase):
         # Он ввел "Купить сладкого хлеба" в текстовое поле
         input_.send_keys('Купить сладкого хлеба')
 
-        # Когда он нажал ввод, страница обновилась,
+        # Когда он нажал ввод
         input_.send_keys(Keys.ENTER)
+        # ее перенесли на другой урл сайта
+        pahom_list_url = self.browser.current_url
+        self.assertRegex(pahom_list_url, '/lists/.+')
 
         # и на странице начался список:
         # "1: Купить сладкого хлеба" как элемент списка.
@@ -54,6 +57,31 @@ class NewVisitorTest(LiveServerTestCase):
         # Он перешел по этому урлу и его список дел был по прежднему там
 
         # Удовлетворенный, Пахом пошел спать.
+        self.browser.quit()
+
+        # Новый пользователь, Братишка, зашел на сайт
+        ## Мы используем новую сессию браузера чтобы убедиться что
+        ## никакая информация об Пахоме не перешла через куки.
+        self.browser = webdriver.Firefox()
+
+        # Братишка зашел на домашнюю страницу. И не увидел ни следа от
+        # списка Пахома
+        self.browser.get(self.live_server_url)
+        page_text = self.browser.find_element_by_tag_name('body').text
+        self.assertNotIn('1: Купить сладкого хлеба', page_text)
+        self.assertNotIn('2: Накормить братишку', page_text)
+
+        # Братишка начал новый списко, введя новую заметку.
+        input_ = self.browser.find_element_by_id('new_item')
+        input_.send_keys('Сорвать погону с поехавшего.')
+        input_.send_keys(Keys.ENTER)
+
+        # Братишка получил свой уникальный урл
+        bratishka_list_url = self.browser.current_url
+        self.assertRegex(bratishka_list_url, '/lists/.+')
+        self.assertNotEqual(bratishka_list_url, pahom_list_url)
+
+        # Удовлетворенный, Братишка тоже пошел спать
 
     def assertTODOInTable(self, to_list_element):
         '''
