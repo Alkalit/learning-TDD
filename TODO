@@ -17,7 +17,7 @@
         """
         Functional  tests  should  help  you  build  an  application  with  the  right
         functionality,  and  guarantee  you  never  accidentally  break  it.  Unit  tests
-        should help you to write code that’s clean and bug free.
+        should help you to write code that's clean and bug free.
         """
 -- Каждый раз когда написав кусок кода, после которого ты считаешь себя умным, стоит обеспокоиться. Потому что вероятно получившийся код избыточно сложен.
 -- Three Strikes and Refactor:
@@ -26,6 +26,26 @@
 -- Интеграционные тесты отличаются от юнитовых тем что вторые проверяют только логику приложения. Первые же при этом еще могут работать с БД и другими данными.
 
 -- КОНЦЕПЦИИ:
--- User Story
-    A description of how the application will work from the point of view of the user.
-    Used to structure a functional test.
+    -- User Story
+        -- A description of how the application will work from the point of view of the user.
+        Used to structure a functional test.
+    -- Regression
+        -- When new code breaks some aspect of the application which used to work.
+    -- Unexpected failure
+        -- When a test fails in a way we weren't expecting. This either means that we've made
+        a mistake in our tests, or that the tests have helped us find a regression, and we need
+        to fix something in our code.
+    -- Red/Green/Refactor
+        -- Another way of describing the TDD process. Write a test and see it fail (Red), write
+        some code to get it to pass (Green), then Refactor to improve the implementation.
+    -- Triangulation
+        -- Adding a test case with a new specific example for some existing code, to justify
+        generalising the implementation (which may be a "cheat" until that point).
+    -- Three strikes and refactor
+        -- A rule of thumb for when to remove duplication from code. When two pieces of
+        code look very similar, it often pays to wait until you see a third use case, so that
+        you're more sure about what part of the code really is the common, re-usable part
+        to refactor out.
+    -- The scratchpad to-do list
+        -- A place to write down things that occur to us as we're coding, so that we can finish
+        up what we're doing and come back to them later.
