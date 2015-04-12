@@ -25,6 +25,15 @@
 -- Перед рефакторингом всегда делай коммит.
 -- Интеграционные тесты отличаются от юнитовых тем что вторые проверяют только логику приложения. Первые же при этом еще могут работать с БД и другими данными.
 
+-- LiveServerTestCase expects to be run by the Django test runner using manage.py. As
+of Django 1.6, the test runner will find any files whose name begins with test. To keep
+things neat and tidy, let’s make a folder for our functional tests, so that it looks a bit like
+an app. All Django needs is for it to be a valid Python module (ie, one with a  __in‐
+it__.pyin it):
+
+-- Для запуска функциональных тестов на отдельном сервере их надо их отнаследовать от LiveServerTestCase и 
+    запускать через manage test
+
 -- КОНЦЕПЦИИ:
     -- User Story
         -- A description of how the application will work from the point of view of the user.

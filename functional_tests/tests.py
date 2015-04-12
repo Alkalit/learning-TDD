@@ -1,8 +1,8 @@
-import unittest
+from django.test import LiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
-class NewVisitorTest(unittest.TestCase):
+class NewVisitorTest(LiveServerTestCase):
 
     def setUp(self):
         self.browser = webdriver.Firefox()
@@ -13,7 +13,7 @@ class NewVisitorTest(unittest.TestCase):
 
     def test_can_start_a_list_and_get_it_later(self):
         # Пахом зашел на главную страницу
-        self.browser.get('http://localhost:8000')
+        self.browser.get(self.live_server_url)
 
         # И обратил внимание на заголовок в браузере
         self.assertIn('To-Do', self.browser.title)
@@ -65,6 +65,3 @@ class NewVisitorTest(unittest.TestCase):
         table = self.browser.find_element_by_id('list_table')
         rows = table.find_elements_by_tag_name('tr')
         self.assertIn(to_list_element, [row.text for row in rows])
-
-if __name__ == '__main__':
-    unittest.main(warnings='ignore')
