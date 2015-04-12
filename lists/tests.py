@@ -13,7 +13,7 @@ class HomePageTest(TestCase):
         request = HttpRequest()
         response = home_page(request)
 
-        self.assertEqual(Item.objects.all(), 0)
+        self.assertEqual(Item.objects.count(), 0)
 
     def test_root_url_resolves_to_home_page_view(self):
         found = resolve('/')
@@ -43,13 +43,9 @@ class HomePageTest(TestCase):
         new_item = Item.objects.first()
         self.assertEqual(new_item.text, note)
 
-        self.assertIn('A new list item', response.content.decode())
-        expected_html = render_to_string(
-            'lists/home.html',
-            {'new_item_text': note}
-        )
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['location'], '/')
 
-        self.assertEqual(response.content.decode(), expected_html)
 
 class ItemModelTest(TestCase):
 
