@@ -22,18 +22,27 @@ class HomePageTest(TestCase):
         self.assertEqual(response.content.decode(), expected_html)
 
     def test_can_save_a_POST_request(self):
+        note = 'A new list item'
         # Конструируем пост-запрос.
         request = HttpRequest()
         request.method = 'POST'
-        request.POST['item_text'] = 'A new list item'
+        # item_text - ключ который присылает форма.
+        request.POST['item_text'] = note
 
+        # Отправляем запрос вьюхе
         response = home_page(request)
+
+        # Проверяем что она сохранила значение заметки
+        self.assertEqual(Item.objects.count(), 1)
+        new_item = Item.objects.first()
+        self.assertEqual(new_item.text, note)
 
         self.assertIn('A new list item', response.content.decode())
         expected_html = render_to_string(
             'lists/home.html',
-            {'new_item_text': 'A new list item'}
+            {'new_item_text': note}
         )
+
         self.assertEqual(response.content.decode(), expected_html)
 
 class ItemModelTest(TestCase):
