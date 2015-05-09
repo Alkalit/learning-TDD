@@ -6,6 +6,7 @@ class NewVisitorTest(LiveServerTestCase):
 
     def setUp(self):
         self.browser = webdriver.Firefox()
+        # Неявно задать время ожидания до загрузки страницы
         self.browser.implicitly_wait(3)
 
     def tearDown(self):
@@ -32,7 +33,7 @@ class NewVisitorTest(LiveServerTestCase):
 
         # Когда он нажал ввод
         input_.send_keys(Keys.ENTER)
-        # ее перенесли на другой урл сайта
+        # его перенесли на другой урл сайта
         pahom_list_url = self.browser.current_url
         self.assertRegex(pahom_list_url, '/lists/.+')
 
@@ -71,7 +72,7 @@ class NewVisitorTest(LiveServerTestCase):
         self.assertNotIn('1: Купить сладкого хлеба', page_text)
         self.assertNotIn('2: Накормить братишку', page_text)
 
-        # Братишка начал новый списко, введя новую заметку.
+        # Братишка начал новый список, введя новую заметку.
         input_ = self.browser.find_element_by_id('new_item')
         input_.send_keys('Сорвать погону с поехавшего.')
         input_.send_keys(Keys.ENTER)
@@ -83,13 +84,13 @@ class NewVisitorTest(LiveServerTestCase):
 
         # Удовлетворенный, Братишка тоже пошел спать
 
-    def assertTODOInTable(self, to_list_element):
+    def assertTODOInTable(self, todo_list_element):
         '''
         В книге обозначено как check_for_row_in_table
         Проверяет наличие элементов списка в таблице.
-        Вынесено в отдельный метод из-за частого использования этого сниппета..
+        Вынесено в отдельный метод из-за частого использования этого сниппета.
         '''
 
         table = self.browser.find_element_by_id('list_table')
         rows = table.find_elements_by_tag_name('tr')
-        self.assertIn(to_list_element, [row.text for row in rows])
+        self.assertIn(todo_list_element, [row.text for row in rows])
