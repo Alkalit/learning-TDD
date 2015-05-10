@@ -65,6 +65,8 @@ class ListViewTest(TestCase):
         self.assertContains(response, 'item 2')
 
     def test_saving_a_POST_request(self):
+        ## test_saving_a_POST_request и test_redirects_after_POST
+        ## разделены чтобы было проще выявлять работу вьюхи.
         # item_text - ключ который присылает форма.
         self.client.post(
             '/lists/new',
@@ -83,4 +85,4 @@ class ListViewTest(TestCase):
         )
 
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response['location'], '/lists/the-only-list-in-the-world/')
+        self.assertRedirects(response, '/lists/the-only-list-in-the-world/')
