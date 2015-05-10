@@ -95,5 +95,7 @@ class ListViewTest(TestCase):
             data={'item_text': 'A new list item'}
         )
 
+        list_ = List.objects.first()
+
         self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, '/lists/the-only-list-in-the-world/')
+        self.assertRedirects(response, '/lists/%d/' % list_.id)
