@@ -9,12 +9,6 @@ from lists.models import Item
 
 class HomePageTest(TestCase):
 
-    def test_saves_items_only_when_necessary(self):
-        request = HttpRequest()
-        home_page(request)
-
-        self.assertEqual(Item.objects.count(), 0)
-
     def test_root_url_resolves_to_home_page_view(self):
         found = resolve('/')
         self.assertEqual(found.func, home_page)
