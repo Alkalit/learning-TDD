@@ -56,18 +56,24 @@ class ListAndItemModelTest(TestCase):
 class ListViewTest(TestCase):
 
     def test_uses_list_template(self):
-        response = self.client.get('/lists/the-only-list-in-the-world/')
+        list_ = List.objects.create()
+        response = self.client.get('/lists/%d/' % list_.id)
         self.assertTemplateUsed(response, 'lists/list.html')
 
-    def test_displays_all_items(self):
-        list_ = List.objects.create()
-        Item.objects.create(text='item 1', list=list_)
-        Item.objects.create(text='item 2', list=list_)
+    def test_displays_all_items_for_current_list(self):
+        correct_list = List.objects.create()
+        Item.objects.create(text='item 1', list=correct_list)
+        Item.objects.create(text='item 2', list=correct_list)
+        other_list = List.objects.create()
+        Item.objects.create(text='Other item 1', list=other_list)
+        Item.objects.create(text='Other item 2', list=other_list)
 
-        response = self.client.get('/lists/the-only-list-in-the-world/')
+        response = self.client.get('/lists/%d/' % correct_list.id)
 
         self.assertContains(response, 'item 1')
         self.assertContains(response, 'item 2')
+        self.assertNotContains(response, 'Other item 1')
+        self.assertNotContains(response, 'Other item 2')
 
     def test_saving_a_POST_request(self):
         ## test_saving_a_POST_request и test_redirects_after_POST
