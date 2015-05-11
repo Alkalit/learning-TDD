@@ -86,3 +86,7 @@ TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'superlists/templates'),
     # os.path.join(os.path.join(BASE_DIR, 'superlists'), 'templates'),
 )
+
+# Т.е. выше каталога проекта. Чтобы собранная статика не попала под версионный
+# контроль
+STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, '../static'))
