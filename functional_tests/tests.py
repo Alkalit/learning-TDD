@@ -1,8 +1,8 @@
-from django.test import LiveServerTestCase
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
-class NewVisitorTest(LiveServerTestCase):
+class NewVisitorTest(StaticLiveServerTestCase):
 
     def setUp(self):
         self.browser = webdriver.Firefox()
@@ -10,6 +10,7 @@ class NewVisitorTest(LiveServerTestCase):
         self.browser.implicitly_wait(3)
 
     def tearDown(self):
+        self.browser.refresh() # for WinError 10054
         self.browser.quit()
 
     def test_can_start_a_list_and_get_it_later(self):
