@@ -84,6 +84,19 @@ class NewVisitorTest(LiveServerTestCase):
 
         # Удовлетворенный, Братишка тоже пошел спать
 
+    def test_layout_and_styling(self):
+        # Пахом зашел на домашнюю страницу
+        self.browser.get(self.live_server_url)
+        self.browser.set_window_size(1024, 768)
+
+        # Он отметил что форма ввода отцентрирована - ништяк!
+        input_ = self.browser.find_element_by_id('new_item')
+        self.assertAlmostEqual(
+            input_.location['x'] + input_.size['width'] / 2, # центр инпута
+            512,
+            delta=5 # точность до 5 пикселей
+        )
+
     def assertTODOInTable(self, todo_list_element):
         '''
         В книге обозначено как check_for_row_in_table
