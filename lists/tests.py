@@ -100,6 +100,14 @@ class ListViewTest(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, '/lists/%d/' % list_.id)
 
+    def test_passes_correct_list_to_template(self):
+        correct_list = List.objects.create()
+        other_list = List.objects.create()
+
+        response = self.client.get('/lists/%d/' % correct_list.id, )
+
+        self.assertEqual(response.context['list'], correct_list)
+
 class NewItemTest(TestCase):
 
     def test_can_save_POST_request_to_an_existing_list(self):
