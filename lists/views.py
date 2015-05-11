@@ -9,8 +9,7 @@ def home_page(request):
 
 def view_list(request, list_id):
     list_ = List.objects.get(pk=list_id)
-    items = list_.item_set.all()
-    return render(request, 'lists/list.html', {'items': items})
+    return render(request, 'lists/list.html', {'list': list_})
 
 def new_list(request):
     list_ = List.objects.create()
