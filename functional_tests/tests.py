@@ -94,7 +94,16 @@ class NewVisitorTest(LiveServerTestCase):
         self.assertAlmostEqual(
             input_.location['x'] + input_.size['width'] / 2, # центр инпута
             512,
-            delta=10 # точность до 5 пикселей
+            delta=10 # точность до 10 пикселей
+        )
+
+        # Он начал новый список и отметил что он тоже отцентрирован
+        input_.send_keys('testing\n')
+        input_ = self.browser.find_element_by_id('new_item')
+        self.assertAlmostEqual(
+            input_.location['x'] + input_.size['width'] / 2, # центр инпута
+            512,
+            delta=10 # точность до 10 пикселей
         )
 
     def assertTODOInTable(self, todo_list_element):
