@@ -1,51 +1,6 @@
-import sys
-
-from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-from selenium import webdriver
+from .base import FunctionalTest
 from selenium.webdriver.common.keys import Keys
-
-
-class FunctionalTest(StaticLiveServerTestCase):
-
-    @classmethod
-    def setUpClass(cls): # setUpClass исполняется единожды перед запуском тестового класса
-        '''
-        Если тесты запущены с заданным доменным именем, то использовать его.
-        Иначе использовать обычную тестовую конфигурацию (localhost:8081).
-        https://docs.djangoproject.com/en/1.8/topics/testing/tools/#django.test.LiveServerTestCase
-        '''
-        for arg in sys.argv:
-            if 'liveserver' in arg:
-                cls.server_url = 'http://' + arg.split('=')[1]
-                return # прекратить исполнение метода.
-
-        super().setUpClass()
-        cls.server_url = cls.live_server_url
-
-    @classmethod
-    def tearDownClass(cls):
-        if cls.server_url == cls.server_url:
-            super().tearDownClass()
-
-    def setUp(self):
-        self.browser = webdriver.Firefox()
-        # Неявно задать время ожидания до загрузки страницы
-        self.browser.implicitly_wait(3)
-
-    def tearDown(self):
-        self.browser.refresh() # for WinError 10054
-        self.browser.quit()
-
-    def assertTODOInTable(self, todo_list_element):
-        '''
-        В книге обозначено как check_for_row_in_table
-        Проверяет наличие элементов списка в таблице.
-        Вынесено в отдельный метод из-за частого использования этого сниппета.
-        '''
-
-        table = self.browser.find_element_by_id('list_table')
-        rows = table.find_elements_by_tag_name('tr')
-        self.assertIn(todo_list_element, [row.text for row in rows])
+from selenium import webdriver
 
 
 class NewVisitorTest(FunctionalTest):
@@ -121,47 +76,3 @@ class NewVisitorTest(FunctionalTest):
         self.assertNotEqual(bratishka_list_url, pahom_list_url)
 
         # Удовлетворенный, Братишка тоже пошел спать
-
-
-class LayoutAndStylingTest(FunctionalTest):
-
-    def test_layout_and_styling(self):
-        # Пахом зашел на домашнюю страницу
-        self.browser.get(self.server_url)
-        self.browser.set_window_size(1024, 768)
-
-        # Он отметил что форма ввода отцентрирована - ништяк!
-        input_ = self.browser.find_element_by_id('new_item')
-        self.assertAlmostEqual(
-            input_.location['x'] + input_.size['width'] / 2, # центр инпута
-            512,
-            delta=10 # точность до 10 пикселей
-        )
-
-        # Он начал новый список и отметил что он тоже отцентрирован
-        input_.send_keys('testing\n')
-        input_ = self.browser.find_element_by_id('new_item')
-        self.assertAlmostEqual(
-            input_.location['x'] + input_.size['width'] / 2, # центр инпута
-            512,
-            delta=10 # точность до 10 пикселей
-        )
-
-class ItemValidationTest(FunctionalTest):
-
-    def test_cannot_add_empty_item(self):
-        # Пахом зашел на домашнюю страницу и случайно нажал ввод при пустом поле
-        # ввода
-
-        # Страница обновилась и появилось сообщение об ошибке, говорящее о том
-        # что тудушка не может быть пустой
-
-        # Он попробовал ввести какой-нибудь текст для проверки и теперь он
-        # добавился
-
-        # Намеренно, он теперь решил ввести пустой ввод еще раз.
-
-        # Сообщение об ошибке появилось снова.
-
-        # И он исправил это введя новую тудушку.
-        pass
