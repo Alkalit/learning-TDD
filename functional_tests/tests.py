@@ -9,8 +9,9 @@ class NewVisitorTest(StaticLiveServerTestCase):
     @classmethod
     def setUpClass(cls): # setUpClass исполняется единожды перед запуском тестового класса
         '''
-        Если тесты запущены с заданным хостингом, то использовать его.
-        Иначе использовать обычную тестовую конфигурацию.
+        Если тесты запущены с заданным доменным именем, то использовать его.
+        Иначе использовать обычную тестовую конфигурацию (localhost:8081).
+        https://docs.djangoproject.com/en/1.8/topics/testing/tools/#django.test.LiveServerTestCase
         '''
         for arg in sys.argv:
             if 'liveserver' in arg:
@@ -33,6 +34,22 @@ class NewVisitorTest(StaticLiveServerTestCase):
     def tearDown(self):
         self.browser.refresh() # for WinError 10054
         self.browser.quit()
+
+    def test_cannot_add_empty_item(self):
+        # Пахом зашел на домашнюю страницу и случайно нажал ввод при пустом поле
+        # ввода
+
+        # Страница обновилась и появилось сообщение об ошибке, говорящее о том
+        # что тудушка не может быть пустой
+
+        # Он попробовал ввести какой-нибудь текст для проверки и теперь он
+        # добавился
+
+        # Намеренно, он теперь решил ввести пустой ввод еще раз.
+
+        # Сообщение об ошибке появилось снова.
+
+        # И он исправил это введя новую тудушку.
 
     def test_can_start_a_list_and_get_it_later(self):
         # Пахом зашел на главную страницу
