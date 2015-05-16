@@ -4,7 +4,8 @@ from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
-class NewVisitorTest(StaticLiveServerTestCase):
+
+class FunctionalTest(StaticLiveServerTestCase):
 
     @classmethod
     def setUpClass(cls): # setUpClass исполняется единожды перед запуском тестового класса
@@ -35,21 +36,19 @@ class NewVisitorTest(StaticLiveServerTestCase):
         self.browser.refresh() # for WinError 10054
         self.browser.quit()
 
-    def test_cannot_add_empty_item(self):
-        # Пахом зашел на домашнюю страницу и случайно нажал ввод при пустом поле
-        # ввода
+    def assertTODOInTable(self, todo_list_element):
+        '''
+        В книге обозначено как check_for_row_in_table
+        Проверяет наличие элементов списка в таблице.
+        Вынесено в отдельный метод из-за частого использования этого сниппета.
+        '''
 
-        # Страница обновилась и появилось сообщение об ошибке, говорящее о том
-        # что тудушка не может быть пустой
+        table = self.browser.find_element_by_id('list_table')
+        rows = table.find_elements_by_tag_name('tr')
+        self.assertIn(todo_list_element, [row.text for row in rows])
 
-        # Он попробовал ввести какой-нибудь текст для проверки и теперь он
-        # добавился
 
-        # Намеренно, он теперь решил ввести пустой ввод еще раз.
-
-        # Сообщение об ошибке появилось снова.
-
-        # И он исправил это введя новую тудушку.
+class NewVisitorTest(FunctionalTest):
 
     def test_can_start_a_list_and_get_it_later(self):
         # Пахом зашел на главную страницу
@@ -123,6 +122,9 @@ class NewVisitorTest(StaticLiveServerTestCase):
 
         # Удовлетворенный, Братишка тоже пошел спать
 
+
+class LayoutAndStylingTest(FunctionalTest):
+
     def test_layout_and_styling(self):
         # Пахом зашел на домашнюю страницу
         self.browser.get(self.server_url)
@@ -145,13 +147,21 @@ class NewVisitorTest(StaticLiveServerTestCase):
             delta=10 # точность до 10 пикселей
         )
 
-    def assertTODOInTable(self, todo_list_element):
-        '''
-        В книге обозначено как check_for_row_in_table
-        Проверяет наличие элементов списка в таблице.
-        Вынесено в отдельный метод из-за частого использования этого сниппета.
-        '''
+class ItemValidationTest(FunctionalTest):
 
-        table = self.browser.find_element_by_id('list_table')
-        rows = table.find_elements_by_tag_name('tr')
-        self.assertIn(todo_list_element, [row.text for row in rows])
+    def test_cannot_add_empty_item(self):
+        # Пахом зашел на домашнюю страницу и случайно нажал ввод при пустом поле
+        # ввода
+
+        # Страница обновилась и появилось сообщение об ошибке, говорящее о том
+        # что тудушка не может быть пустой
+
+        # Он попробовал ввести какой-нибудь текст для проверки и теперь он
+        # добавился
+
+        # Намеренно, он теперь решил ввести пустой ввод еще раз.
+
+        # Сообщение об ошибке появилось снова.
+
+        # И он исправил это введя новую тудушку.
+        pass
