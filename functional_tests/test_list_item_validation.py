@@ -15,11 +15,11 @@ class ItemValidationTest(FunctionalTest):
 
         # Он попробовал ввести какой-нибудь текст для проверки и теперь он
         # добавился
-        self.browser.find_element_by_id('id_new_item').send_keys('Сочинить песню про слоника\n')
+        self.browser.find_element_by_id('new_item').send_keys('Сочинить песню про слоника\n')
         self.assertTODOInTable('1: Сочинить песню про слоника')
 
         # Намеренно, он теперь решил ввести пустой ввод еще раз.
-        self.browser.find_element_by_id('id_new_item').send_keys('\n')
+        self.browser.find_element_by_id('new_item').send_keys('\n')
 
         # Сообщение об ошибке появилось снова.
         self.assertTODOInTable('1: Сочинить песню про слоника')
@@ -27,6 +27,6 @@ class ItemValidationTest(FunctionalTest):
         self.assertEqual(error.text, "You can't have an empty list item")
 
         # И он исправил это введя новую тудушку.
-        self.browser.find_element_by_id('id_new_item').send_keys('Приготовить сладкого хлеба\n')
+        self.browser.find_element_by_id('new_item').send_keys('Приготовить сладкого хлеба\n')
         self.assertTODOInTable('1: Сочинить песню про слоника')
         self.assertTODOInTable('2: Приготовить сладкого хлеба')
