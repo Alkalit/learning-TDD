@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.core.urlresolvers import resolve
 from django.http.request import HttpRequest
 from django.template.loader import render_to_string
+from django.utils.html import escape
 
 from lists.views import home_page
 from lists.models import Item, List
@@ -83,7 +84,7 @@ class NewItemTest(TestCase):
         response = self.client.post('/lists/new', data={'item_text': ''})
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'lists/home.html')
-        expected_error = "You can't have an empty list item"
+        expected_error = escape("You can't have an empty list item")
         self.assertContains(response, expected_error)
 
     def test_can_save_POST_request_to_an_existing_list(self):

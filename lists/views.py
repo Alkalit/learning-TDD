@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http.response import HttpResponse
+from django.core.exceptions import ValidationError
 
 from lists.models import Item, List
 
@@ -13,8 +14,13 @@ def view_list(request, list_id):
 
 def new_list(request):
     list_ = List.objects.create()
-    Item.objects.create(text=request.POST['item_text'], list=list_)
-    return redirect('/lists/%d/' % list_.id)
+    item = Item.objects.create(text=request.POST['item_text'], list=list_)
+
+    try:
+        item.full_clean()
+        return redirect('/lists/%d/' % list_.id)
+    except ValidationError:
+        return render(request, 'lists/home.html', {'error': "You can't have an empty list item\n"})
 
 def add_item(request, list_id):
     list_ = List.objects.get(pk=list_id)
