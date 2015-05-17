@@ -80,6 +80,11 @@ class ListViewTest(TestCase):
 
 class NewItemTest(TestCase):
 
+    def test_invalid_list_items_arent_saved(self):
+        response = self.client.post('/lists/new', data={'item_text': ''})
+        self.assertEqual(List.objects.count(), 0)
+        self.assertEqual(Item.objects.count(), 0)
+
     def test_validation_errors_are_sent_back_to_home_page_template(self):
         response = self.client.post('/lists/new', data={'item_text': ''})
         self.assertEqual(response.status_code, 200)
