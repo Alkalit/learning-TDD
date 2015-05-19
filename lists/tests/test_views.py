@@ -11,18 +11,6 @@ from lists.forms import ItemForm
 
 class HomePageTest(TestCase):
 
-    def test_root_url_resolves_to_home_page_view(self):
-        found = resolve('/')
-        self.assertEqual(found.func, home_page)
-
-    def test_returns_correct_html(self):
-        request = HttpRequest()
-        response = home_page(request)
-
-        # Смотрим что нам пришла html-страница с нужным содержимым.
-        expected_html = render_to_string('lists/home.html')
-        self.assertEqual(response.content.decode(), expected_html)
-
     def test_home_page_renders_home_page_template(self):
         response = self.client.get('/')
         self.assertTemplateUsed(response, 'lists/home.html')
