@@ -6,6 +6,22 @@ from lists.models import Item, List
 
 class ListAndItemModelTest(TestCase):
 
+    def test_duplicate_items_are_invalid(self):
+        list_ = List.objects.create()
+        Item.objects.create(list=list_, text='spam')
+
+        with self.assertRaises(ValidationError):
+            item = Item(list=list_, text='spam')
+            item.full_clean()
+
+    def test_CAN_save_same_item_to_differ_list(self):
+        some_list = List.objects.create()
+        Item.objects.create(list=some_list, text='spam')
+
+        other_list = List.objects.create()
+        item = Item(list=other_list, text='spam')
+        item.full_clean()  # should not raise
+
     def test_get_absolute_url(self):
         list_ = List.objects.create()
         self.assertEqual(list_.get_absolute_url(), '/lists/%d/' % list_.id)
