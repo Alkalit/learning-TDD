@@ -6,6 +6,7 @@ from django.utils.html import escape
 
 from lists.views import home_page
 from lists.models import Item, List
+from lists.forms import ItemForm
 
 
 class HomePageTest(TestCase):
@@ -21,6 +22,14 @@ class HomePageTest(TestCase):
         # Смотрим что нам пришла html-страница с нужным содержимым.
         expected_html = render_to_string('lists/home.html')
         self.assertEqual(response.content.decode(), expected_html)
+
+    def test_home_page_renders_home_page_template(self):
+        response = self.client.get('/')
+        self.assertTemplateUsed(response, 'lists/home.html')
+
+    def test_home_page_uses_item_form(self):
+        response = self.client.get('/')
+        self.assertIsInstance(response.context['form'], ItemForm)
 
 
 class ListViewTest(TestCase):
