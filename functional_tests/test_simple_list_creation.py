@@ -15,7 +15,7 @@ class NewVisitorTest(FunctionalTest):
         self.assertIn('To-Do', header_text)
 
         # Он увидел что можно внести заметку
-        input_ = self.browser.find_element_by_id('new_item')
+        input_ = self.get_item_input_box()
         self.assertEqual(
             input_.get_attribute('placeholder'),
             'Введите заметку'
@@ -37,7 +37,7 @@ class NewVisitorTest(FunctionalTest):
         # Окошко для ввдоа также было доступно
         # Пахом ввел:
         # "Накормить братишку". Пахом очень последователен
-        input_ = self.browser.find_element_by_id('new_item')
+        input_ = self.get_item_input_box()
         input_.send_keys('Накормить братишку')
         input_.send_keys(Keys.ENTER)
 
@@ -66,7 +66,7 @@ class NewVisitorTest(FunctionalTest):
         self.assertNotIn('2: Накормить братишку', page_text)
 
         # Братишка начал новый список, введя новую заметку.
-        input_ = self.browser.find_element_by_id('new_item')
+        input_ = self.get_item_input_box()
         input_.send_keys('Сорвать погону с поехавшего.')
         input_.send_keys(Keys.ENTER)
 

@@ -6,6 +6,13 @@ from selenium import webdriver
 
 class FunctionalTest(StaticLiveServerTestCase):
 
+    def get_item_input_box(self):
+        '''
+        Возвращает объект инпута. Реализовано в виде отдельного метода чтобы
+        при необходимости можно было переписать имя css id только в одном месте.
+        '''
+        return self.browser.find_element_by_id('id_text')
+
     @classmethod
     def setUpClass(cls): # setUpClass исполняется единожды перед запуском тестового класса
         '''

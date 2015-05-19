@@ -8,7 +8,7 @@ class LayoutAndStylingTest(FunctionalTest):
         self.browser.set_window_size(1024, 768)
 
         # Он отметил что форма ввода отцентрирована - ништяк!
-        input_ = self.browser.find_element_by_id('new_item')
+        input_ = self.get_item_input_box()
         self.assertAlmostEqual(
             input_.location['x'] + input_.size['width'] / 2, # центр инпута
             512,
@@ -17,7 +17,7 @@ class LayoutAndStylingTest(FunctionalTest):
 
         # Он начал новый список и отметил что он тоже отцентрирован
         input_.send_keys('testing\n')
-        input_ = self.browser.find_element_by_id('new_item')
+        input_ = self.get_item_input_box()
         self.assertAlmostEqual(
             input_.location['x'] + input_.size['width'] / 2, # центр инпута
             512,
