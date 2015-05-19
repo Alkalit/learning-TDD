@@ -2,6 +2,18 @@ from .base import FunctionalTest
 
 class ItemValidationTest(FunctionalTest):
 
+    def test_list_item_validation(self):
+        # Пахом зашел на домашнюю страницу и начал новый список
+        self.browser.get(self.server_url)
+        self.get_item_input_box().send_keys('Рассказать охуительную историю\n')
+        self.assertTODOInTable('1: Рассказать охуительную историю')
+        # Он случайно ввел такую же тудушку повторно
+        self.get_item_input_box().send_keys('Рассказать охуительную историю\n')
+        # И увидел сообщение об этом
+        self.assertTODOInTable('1: Рассказать охуительную историю')
+        error = self.browser.find_element_by_css_selector('.has-error')
+        self.assertEqual(error.text, "В списке уже есть такой элемент")
+
     def test_cannot_add_empty_item(self):
         # Пахом зашел на домашнюю страницу и случайно нажал ввод при пустом поле
         # ввода
