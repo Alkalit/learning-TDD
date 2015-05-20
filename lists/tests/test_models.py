@@ -4,7 +4,14 @@ from django.core.exceptions import ValidationError
 from lists.models import Item, List
 
 
-class ListAndItemModelTest(TestCase):
+class ListModelTest(TestCase):
+
+    def test_get_absolute_url(self):
+        list_ = List.objects.create()
+        self.assertEqual(list_.get_absolute_url(), '/lists/%d/' % list_.id)
+
+
+class ItemModelTest(TestCase):
 
     def test_default_text(self):
         item = Item()
@@ -51,10 +58,6 @@ class ListAndItemModelTest(TestCase):
         other_list = List.objects.create()
         item = Item(list=other_list, text='spam')
         item.full_clean()  # should not raise
-
-    def test_get_absolute_url(self):
-        list_ = List.objects.create()
-        self.assertEqual(list_.get_absolute_url(), '/lists/%d/' % list_.id)
 
     def test_cannot_save_empty_list_item(self):
         list_ = List.objects.create()
