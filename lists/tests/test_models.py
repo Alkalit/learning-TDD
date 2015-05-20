@@ -6,6 +6,23 @@ from lists.models import Item, List
 
 class ListAndItemModelTest(TestCase):
 
+    def test_string_representation(self):
+        item = Item(text='some text')
+
+        self.assertEqual(str(item), 'some text')
+
+    def test_list_ordering(self):
+        list_ = List.objects.create()
+
+        item1 = Item.objects.create(list=list_, text='i1')
+        item2 = Item.objects.create(list=list_, text='item 2')
+        item3 = Item.objects.create(list=list_, text='third')
+
+        self.assertEqual(
+            list(Item.objects.all()),
+            [item1, item2, item3]
+        )
+
     def test_duplicate_items_are_invalid(self):
         list_ = List.objects.create()
         Item.objects.create(list=list_, text='spam')
@@ -15,6 +32,9 @@ class ListAndItemModelTest(TestCase):
             item.full_clean()
 
     def test_CAN_save_same_item_to_differ_list(self):
+        '''
+        Дополнительный тест имеющий отношение к test_duplicate_items_are_invalid.
+        '''
         some_list = List.objects.create()
         Item.objects.create(list=some_list, text='spam')
 
