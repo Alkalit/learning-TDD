@@ -131,6 +131,15 @@
 
     (Again, we're not trying to perfectly follow the rules of REST, which would use a PUT request here—we're just using REST for inspiration.)
 
+-- Советы по тестированию вьюх:
+    -- Use the Django test client.
+    -- Check the template used. Then, check each item in the template context.
+    -- Check any objects are the right ones, or querysets have the correct items.
+    -- Check any forms are of the correct class.
+    -- Test any template logic: any for or if should get a minimal test.
+    -- For views that handle POST requests, make sure you test both the valid case and the invalid case.
+    -- Sanity-check that your form is rendered, and its errors are displayed.
+
 -- КОНЦЕПЦИИ:
     -- User Story
         -- A description of how the application will work from the point of view of the user.  Used to structure a functional test.
