@@ -22,6 +22,20 @@ class HomePageTest(TestCase):
 
 class ListViewTest(TestCase):
 
+    def test_duplicate_item_validation_errors_end_up_on_lists_page(self):
+        list1 = List.objects.create()
+        item = Item.objects.create(list=list1, text='textey')
+
+        response = self.client.post(
+            '/lists/%d/' % list1.id,
+            data={'text': 'textey'}
+        )
+
+        expected_error = escape("В списке уже есть такой элемент")
+        self.assertContains(response, expected_error)
+        self.assertTemplateUsed(response, 'lists/list.html')
+        self.assertEqual(Item.objects.count(), 1)
+
     def test_displays_item_form(self):
         list_ = List.objects.create()
         response = self.client.get('/lists/%d/' % list_.id)
